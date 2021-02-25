@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SRA Name Scroll Tool</title>
+		<style>
+			#namescroll
+			{
+				color: white;
+				font-size: 30px;
+				text-align: center;
+				vertical-align: middle;
+			}
+
+			body, div, p
+			{
+				background-color: transparent;
+				margin: 0;
+				padding: 0;
+			}
+
+			img
+			{
+				vertical-align: top;
+			}
+
+            @keyframes fadeIn
+            {
+            	from	{  opacity: 0;  }
+            	to		{  opacity: 1;	}
+            }
+
+            @keyframes fadeOut
+            {
+            	from	{  opacity: 1;	}
+            	to		{  opacity: 0; 	}
+            }
+
+            .fade-in
+            {
+            	animation-name: fadeIn;
+            	animation-duration: 0.5s;
+            	animation-timing-function: linear;
+            	animation-delay: 0s;
+            	animation-iteration-count: 1;
+            	animation-direction: normal;
+
+            	opacity: 1;
+            }
+
+            .fade-out
+            {
+            	animation-name: fadeOut;
+            	animation-duration: 0.5s;
+            	animation-timing-function: linear;
+            	animation-delay: 0s;
+            	animation-iteration-count: 1;
+            	animation-direction: normal;
+
+            	opacity: 0;
+            }
+		</style>
+	</head>
+	<body>
+		<div id="namescroll"></div>
+	</body>
+	<script type="text/javascript">
+		// First, get the query parameters.
+		// Then, get the icons or glyphs for user (person), Twitch (Glitch), Twitter (bird), YouTube (play button)
+		// Then, display the things rotating every fifteen seconds.
+		// Accept height/width parameters?
+		// Accept color parameters?
+
+		var logos = [ "", "./Images/twitter.png", "./Images/twitch.png", "./Images/youtube.png" ];
+
+		let namescroll = document.getElementById ('namescroll')
+		let parameters = new URLSearchParams (location.search);
+		let names = parsePlatforms (parameters);
+
+		if (parameters.get ('color') != null || parameters.get ('colour') != null)
+		{
+			let colour = parameters.get ('colour') != null ? parameters.get ('colour') : parameters.get ('color');
+			setColour (colour, namescroll);
+		}
+
+		let timeout = parseInt(parameters.get ('timeout'));
+
+		if (timeout === null || isNaN (timeout))
+		{
+			timeout = 15000;
+		}
+
+		rotateNames (namescroll, names, -1, timeout);
+
+		async function rotateNames (element, names, platform, timeout)
+		{
+			element.className = "fade-out";
+
+			await new Promise(r => setTimeout(r, 500));
+
+			clearElement (element);
+
+			++ platform;
+			platform %= names.length;
+
+			while (names[platform] == "" || names[platform] === null)
+			{
+				++ platform;
+				platform %= names.length;
+			}
+
+			let p = document.createElement ("p");
+
+			if (platform != 0)
+			{
+				let img = new Image (30, 30);
+				img.src = logos[platform];
+
+				p.appendChild (img);
+			}
+
+			let name = document.createTextNode (names[platform]);
+			p.appendChild (name);
+
+			element.appendChild (p);
+
+			element.className = "fade-in";
+
+			window.setTimeout (rotateNames, timeout, element, names, platform, timeout);
+		}
+
+		function clearElement (element)
+		{
+			while (element.firstChild !== null)
+			{
+				element.firstChild.remove();
+			}
+		}
+
+		function parsePlatforms (parameters)
+		{
+			let platforms = [ ];
+
+			let username = parameters.get('user');
+			let twitter = parameters.get('twitter');
+			let twitch = parameters.get('twitch');
+			let youtube = parameters.get('youtube');
+
+			if (username !== undefined)
+			{
+				platforms.push(username);
+			}
+
+			if (twitter !== undefined)
+			{
+				platforms.push(twitter);
+			}
+
+			if (twitch !== undefined)
+			{
+				platforms.push(twitch);
+			}
+
+			if (youtube !== undefined)
+			{
+				platforms.push(youtube);
+			}
+
+			return platforms;
+		}
+
+		function setColour (colour, element)
+		{
+			let colourStyle = new Option().style;
+
+			var temp = new Option().style;
+			temp.color = colour;
+
+			if (temp.color === '')
+			{
+				if (!colour.startsWith("#"))
+				{
+					setColour ("#" + colour, element);
+				}
+				else
+				{
+					colour = "white";
+				}
+			}
+
+			element.style.color = colour;
+		}
+	</script>
+</html>
