@@ -1,0 +1,107 @@
+<html><head>
+<meta charset="utf-8">
+<style>
+body {
+  background-color: black;
+}
+iframe {
+  overflow: hidden;
+  border: none;
+  position: relative;
+  left: -15px;
+  top: -50px;
+}
+.acrop {
+  display: inline-block;
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+  border: none;
+  position: relative;
+}
+
+</style>
+<script>
+//50x50 each
+//grid inside the iframe:
+//horizontal: 15px, 51px, 51px, ...
+//vertical: 53px each
+let toppx=2
+let leftpx=15
+let leftsize=51
+let topsize=53
+let grid=`
+charge  ice     wave      spazer  plasma
+morph   varia   spring    hjb     space
+bombs   gravity ridley    speed   screw
+croc    kraid   phantoon  draygon shak
+`
+let displays=["varia gravity kraid phantoon ridley draygon",
+              "charge ice    space hjb      spring bombs",
+              "varia gravity speed ice      bombs"]
+for (var i=0; i<displays.length; i++) {
+  displays[i] = displays[i].match(/\w+/g)
+}
+grid = grid.match(/\w.*/g)
+var gridpxlookup = {}
+for (var i=0; i<grid.length; i++) {
+  var line = grid[i].match(/\w+/g)
+  for (var j=0; j<line.length; j++) {
+    gridpxlookup[line[j]] = {top  : toppx  + i * topsize,
+                             left : leftpx + j * leftsize}
+  }
+}
+// bombs: {...}
+//   left: 15
+//   top: 100
+// charge: Object { top: 0, left: 15 }
+// croc: Object { top: 150, left: 15 }
+// etc...
+
+window.addEventListener('load', () => {
+
+let timings = [8, 8, 8]
+let totalSeconds = 0
+for (var i=0; i<timings.length; i++) {
+  totalSeconds += timings[i]
+}
+console.log('totalSeconds = ' + totalSeconds)
+
+currentSeconds = ((new Date).getMinutes()*60 + (new Date).getSeconds() + (new Date).getMilliseconds()/1000) % (30*60) // repeat/reset every 30 minutes
+currentSeconds %= totalSeconds
+console.log(currentSeconds)
+for (var i=0; i<timings.length; i++) {
+  if (currentSeconds < timings[i]) {
+    console.log(' => '+ i);
+    break;
+  }
+  currentSeconds -= timings[i]
+}
+
+// ok, the clock says we are currentSeconds seconds into displaying the i'th row of items
+// let's put that row on display now.
+for (var j=0; j<displays[i].length; j++) {
+  console.log('[' + i + ']' + '[' + j + ']')
+  document.getElementById('iframe' + j).style.left = "-" + gridpxlookup[displays[i][j]].left + "px"
+  console.log('iframe' + j + ' - ' + displays[i][j] + ' - ' + JSON.stringify(gridpxlookup[displays[i][j]]))
+  document.getElementById('iframe' + j).style.top  = "-" + gridpxlookup[displays[i][j]].top + "px"
+  document.getElementById('item' + j).style.display = "inline-block"
+  
+}
+for (; j < 6; j++) {
+  document.getElementById('item' + j).style.display = "none"
+}
+});
+
+</script>
+</head>
+<body>
+<div id="fader">
+<div id="item0" class="acrop"><iframe id="iframe0" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+<div id="item1" class="acrop"><iframe id="iframe1" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+<div id="item2" class="acrop"><iframe id="iframe2" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+<div id="item3" class="acrop"><iframe id="iframe3" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+<div id="item4" class="acrop"><iframe id="iframe4" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+<div id="item5" class="acrop"><iframe id="iframe5" src="https://sm-rando-tracker.herokuapp.com/?restreamedPlayer=0&trackerKey=htbhtbtbht" scrolling="no" width=283 height=209></iframe></div>
+</div>
+</body></html>
