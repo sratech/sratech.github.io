@@ -76,13 +76,17 @@
 		let parameters = new URLSearchParams (location.search);
 		let names = parsePlatforms (parameters);
 
-		if (parameters.get ('color') != null || parameters.get ('colour') != null)
-		{
-			let colour = parameters.get ('colour') != null ? parameters.get ('colour') : parameters.get ('color');
-			setColour (colour, namescroll);
-		}
+		let color = getParameter ('color', parameters);
+		let colour = getParameter ('colour', parameters);
+		
+		setColour (colour ?? color, namescroll);
 
-		let timeout = parseInt(parameters.get ('timeout'));
+		let timeout = 15000;
+		
+		if (parameters.get('timeout'))
+		{
+			timeout = parseInt(parameters.get ('timeout'));
+		}
 
 		if (timeout === null || isNaN (timeout))
 		{
@@ -135,15 +139,27 @@
 				element.firstChild.remove();
 			}
 		}
+		
+		function getParameter (needle, haystack)
+		{
+			let returnValue = undefined;
+			
+			if (haystack.has (needle))
+			{
+				returnValue = haystack.get (needle);
+			}
+			
+			return returnValue;
+		}
 
 		function parsePlatforms (parameters)
 		{
 			let platforms = [ ];
-
-			let username = parameters.get('user');
-			let twitter = parameters.get('twitter');
-			let twitch = parameters.get('twitch');
-			let youtube = parameters.get('youtube');
+			
+			let username = getParameter ('user', parameters);
+			let twitter = getParameter ('twitter', parameters);
+			let twitch = getParameter ('twitch', parameters);
+			let youtube = getParameter ('youtube', parameters);
 
 			if (username !== undefined)
 			{
