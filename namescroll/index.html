@@ -160,26 +160,11 @@
 			let twitter = getParameter ('twitter', parameters);
 			let twitch = getParameter ('twitch', parameters);
 			let youtube = getParameter ('youtube', parameters);
-
-			if (username !== undefined)
-			{
-				platforms.push(username);
-			}
-
-			if (twitter !== undefined)
-			{
-				platforms.push(twitter);
-			}
-
-			if (twitch !== undefined)
-			{
-				platforms.push(twitch);
-			}
-
-			if (youtube !== undefined)
-			{
-				platforms.push(youtube);
-			}
+							 
+			platforms.push (username ?? null);
+			platforms.push (twitter ?? null);
+			platforms.push (twitch ?? null);
+			platforms.push (youtube ?? null);
 
 			return platforms;
 		}
