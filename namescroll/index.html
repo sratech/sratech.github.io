@@ -186,7 +186,7 @@
 			element.style.color = colourStyle.color;
 		}
 					
-		function attemptSetColour (colour, default)
+		function attemptSetColour (colour, defaultColour)
 		{
 			var temp = new Option().style;
 			temp.color = colour;
@@ -199,7 +199,7 @@
 				}
 				else
 				{
-					temp.color = default;
+					temp.color = defaultColour;
 				}
 			}
 
