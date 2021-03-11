@@ -175,18 +175,24 @@
 					
 			if (colour2 !== undefined && colour2 !== null)
 			{
-				colourStyle = attemptSetColour (colour2, defaultColour);
+				colourStyle = attemptSetColour (colour2);
 			}
 					
 			if (colour1 !== undefined && colour1 !== null)
 			{
-				colourStyle = attemptSetColour (colour1, defaultColour);
+				colourStyle = attemptSetColour (colour1);
 			}
+					
+			if (colour2 === undefined || colour2 === null && colour1 === undefined || colour1 === null)
+			{
+				colourStyle = attemptSetColour (defaultColour);
+			}
+					
 					
 			element.style.color = colourStyle.color;
 		}
 					
-		function attemptSetColour (colour, defaultColour)
+		function attemptSetColour (colour)
 		{
 			var temp = new Option().style;
 			temp.color = colour;
@@ -199,7 +205,7 @@
 				}
 				else
 				{
-					temp.color = defaultColour;
+					temp.color = "white";
 				}
 			}
 
