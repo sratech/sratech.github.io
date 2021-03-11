@@ -79,7 +79,7 @@
 		let color = getParameter ('color', parameters);
 		let colour = getParameter ('colour', parameters);
 		
-		setColour (colour ?? color ?? "white", namescroll);
+		setColour (colour, color, "white", namescroll);
 
 		let timeout = 15000;
 		
@@ -169,10 +169,25 @@
 			return platforms;
 		}
 
-		function setColour (colour, element)
+		function setColour (colour2, colour1, defaultColour = white, element)
 		{
 			let colourStyle = new Option().style;
-
+					
+			if (colour2 !== undefined && colour2 !== null)
+			{
+				colourStyle = attemptSetColour (colour2, defaultColour);
+			}
+					
+			if (colour1 !== undefined && colour1 !== null)
+			{
+				colourStyle = attemptSetColour (colour1, defaultColour);
+			}
+					
+			element.style.color = colourStyle.color;
+		}
+					
+		function attemptSetColour (colour, default)
+		{
 			var temp = new Option().style;
 			temp.color = colour;
 
@@ -180,15 +195,15 @@
 			{
 				if (!colour.startsWith("#"))
 				{
-					setColour ("#" + colour, element);
+					attemptSetColour ("#" + colour, element);
 				}
 				else
 				{
-					colour = "white";
+					temp.color = default;
 				}
 			}
 
-			element.style.color = colour;
+			return temp;
 		}
 	</script>
 </html>
