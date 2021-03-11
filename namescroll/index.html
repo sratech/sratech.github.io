@@ -160,13 +160,25 @@
 			let twitter = getParameter ('twitter', parameters);
 			let twitch = getParameter ('twitch', parameters);
 			let youtube = getParameter ('youtube', parameters);
+			
+			platformPush (username, platforms);
+			platformPush (twitter, platforms);
+			platformPush (twitch, platforms);
+			platformPush (youtube, platforms);
 							 
-			platforms.push (username ?? null);
-			platforms.push (twitter ?? null);
-			platforms.push (twitch ?? null);
-			platforms.push (youtube ?? null);
-
 			return platforms;
+		}
+		
+		function platformsPush (word, array)
+		{
+			if (word !== null && word !== undefined)
+			{
+				array.push (word);
+			}
+			else
+			{
+				array.push (null);
+			}
 		}
 
 		function setColour (colour2, colour1, defaultColour = white, element)
