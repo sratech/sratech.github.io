@@ -26,13 +26,13 @@
 			@keyframes fadeIn
 			{
 				from	{  opacity: 0;  }
-				to	{  opacity: 1;	}
+				to		{  opacity: 1;	}
 			}
 
 			@keyframes fadeOut
 			{
 				from	{  opacity: 1;	}
-				to	{  opacity: 0; 	}
+				to		{  opacity: 0; 	}
 			}
 
 			.fade-in
@@ -69,7 +69,6 @@
 		// Then, display the things rotating every fifteen seconds.
 		// Accept height/width parameters?
 		// Accept color parameters?
-
 		var logos = [ "", "./Images/twitter.png", "./Images/twitch.png", "./Images/youtube.png" ];
 
 		let namescroll = document.getElementById ('namescroll')
@@ -175,10 +174,6 @@
 			{
 				array.push (word);
 			}
-			else
-			{
-				array.push (null);
-			}
 		}
 
 		function setColour (colour2, colour1, defaultColour = white, element)
@@ -212,9 +207,10 @@
 			{
 				if (!colour.startsWith("#"))
 				{
-					attemptSetColour ("#" + colour, element);
+					temp.color = "#" + colour;
 				}
-				else
+
+				if (temp.color === '')
 				{
 					temp.color = "white";
 				}
