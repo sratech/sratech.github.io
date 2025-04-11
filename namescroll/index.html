@@ -184,22 +184,22 @@
 		function setColour (colour2, colour1, defaultColour = white, element)
 		{
 			let colourStyle = new Option().style;
-					
+
 			if (colour2 !== undefined && colour2 !== null)
 			{
 				colourStyle = attemptSetColour (colour2);
 			}
-					
-			if (colour1 !== undefined && colour1 !== null)
+
+			if (colourStyle.color === '' && colour1 !== undefined && colour1 !== null)
 			{
 				colourStyle = attemptSetColour (colour1);
 			}
-					
-			if ((colour2 === undefined || colour2 === null) && (colour1 === undefined || colour1 === null))
+
+			if (colourStyle.color === '' && (colour2 === undefined || colour2 === null) && (colour1 === undefined || colour1 === null))
 			{
 				colourStyle = attemptSetColour (defaultColour);
-			}				
-					
+			}
+
 			element.style.color = colourStyle.color;
 		}
 					
